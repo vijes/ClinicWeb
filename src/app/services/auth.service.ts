@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
 
-const AUTH_API = 'http://localhost:8081/api/auth/';
+const AUTH_API = environment.apiUrl + '/auth/';
 
 @Injectable({
   providedIn: 'root'

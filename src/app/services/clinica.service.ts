@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Clinica } from '../models/clinica.model';
 
-const API_URL = 'http://localhost:8081/api/clinicas';
-const PUBLIC_API_URL = 'http://localhost:8081/api/public/clinicas';
+const API_URL = environment.apiUrl + '/clinicas';
+const PUBLIC_API_URL = environment.apiUrl + '/public/clinicas';
 
 @Injectable({
   providedIn: 'root'

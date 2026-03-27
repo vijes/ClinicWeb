@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cita } from '../models/cita.model';
 
-const API_URL = 'http://localhost:8081/api/citas';
+const API_URL = environment.apiUrl + '/citas';
 
 @Injectable({
   providedIn: 'root'
