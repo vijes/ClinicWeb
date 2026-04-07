@@ -12,5 +12,12 @@ export interface Clinica {
     telefonoConvencional?: string;
     email: string;
     cedulaRepresentante: string;
+    repPrimerNombre?: string;
+    repSegundoNombre?: string;
+    repPrimerApellido?: string;
+    repSegundoApellido?: string;
+    repFechaNacimiento?: string;
+    repEmail?: string;
+    repTelefono?: string;
     codigoAccesoPortal?: string;
 }

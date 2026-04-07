@@ -43,10 +43,6 @@ import { Clinica } from '../../models/clinica.model';
               <input type="text" name="razonSocial" [(ngModel)]="clinica.razonSocial" [required]="clinica.esEmpresa" #razon="ngModel">
               <div class="error-msg" *ngIf="razon.invalid && (razon.dirty || cForm.submitted)">Requerido para empresas</div>
             </div>
-            <div class="form-group">
-              <label>Nombre Comercial</label>
-              <input type="text" name="nombreComercial" [(ngModel)]="clinica.nombreComercial">
-            </div>
           </div>
 
           <!-- Campos para Persona Natural -->
@@ -73,6 +69,11 @@ import { Clinica } from '../../models/clinica.model';
             </div>
           </div>
 
+          <div class="form-group">
+            <label>Nombre Comercial</label>
+            <input type="text" name="nombreComercial" [(ngModel)]="clinica.nombreComercial">
+          </div>
+
           <div class="section-title">Contacto y Representante</div>
           <div class="row">
             <div class="form-group col">
@@ -84,6 +85,51 @@ import { Clinica } from '../../models/clinica.model';
               <label>Cédula Representante Legal *</label>
               <input type="text" name="cedulaRepresentante" [(ngModel)]="clinica.cedulaRepresentante" required maxlength="10" pattern="^[0-9]{10}$" #cedRep="ngModel">
               <div class="error-msg" *ngIf="cedRep.invalid && (cedRep.dirty || cForm.submitted)">Debe ser 10 dígitos</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col">
+              <label>Primer Nombre *</label>
+              <input type="text" name="rep_primerNombre" [(ngModel)]="clinica.repPrimerNombre" required minlength="5" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" #repPNom="ngModel">
+              <div class="error-msg" *ngIf="repPNom.invalid && (repPNom.dirty || cForm.submitted)">Mínimo 5 caracteres alpabéticos</div>
+            </div>
+            <div class="form-group col">
+              <label>Segundo Nombre</label>
+              <input type="text" name="rep_segundoNombre" [(ngModel)]="clinica.repSegundoNombre" minlength="5" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" #repSNom="ngModel">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col">
+              <label>Primer Apellido *</label>
+              <input type="text" name="rep_primerApellido" [(ngModel)]="clinica.repPrimerApellido" required minlength="5" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" #repPApe="ngModel">
+              <div class="error-msg" *ngIf="repPApe.invalid && (repPApe.dirty || cForm.submitted)">Mínimo 5 caracteres alpabéticos</div>
+            </div>
+            <div class="form-group col">
+              <label>Segundo Apellido</label>
+              <input type="text" name="rep_segundoApellido" [(ngModel)]="clinica.repSegundoApellido" minlength="5" maxlength="50" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" #repSApe="ngModel">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col">
+              <label>Fecha Nacimiento *</label>
+              <input type="date" name="rep_fechaNacimiento" [(ngModel)]="clinica.repFechaNacimiento" required [max]="today" #fNac="ngModel">
+              <div class="error-msg" *ngIf="fNac.invalid && (fNac.dirty || cForm.submitted)">Requerido y no puede ser futura</div>
+            </div>
+            <div class="form-group col">
+              <label>Email Representante</label>
+              <input type="email" name="rep_email" [(ngModel)]="clinica.repEmail" email #repEmailCtrl="ngModel" style="text-transform: none;">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col">
+              <label>Teléfono Representante</label>
+              <input type="text" name="rep_telefono" [(ngModel)]="clinica.repTelefono" maxlength="10">
+            </div>
+            <div class="form-group col">
             </div>
           </div>
 
@@ -125,10 +171,18 @@ export class ClinicaFormComponent implements OnInit {
     esEmpresa: true,
     email: '',
     telefonoCelular: '',
-    cedulaRepresentante: ''
+    cedulaRepresentante: '',
+    repPrimerNombre: '',
+    repSegundoNombre: '',
+    repPrimerApellido: '',
+    repSegundoApellido: '',
+    repFechaNacimiento: '',
+    repEmail: '',
+    repTelefono: ''
   };
   isEdit = false;
   apiError = '';
+  today: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private clinicaService: ClinicaService,
@@ -171,10 +225,19 @@ export class ClinicaFormComponent implements OnInit {
     if (this.clinica.ruc) this.clinica.ruc = this.clinica.ruc.toUpperCase();
     if (this.clinica.razonSocial) this.clinica.razonSocial = this.clinica.razonSocial.toUpperCase();
     if (this.clinica.nombreComercial) this.clinica.nombreComercial = this.clinica.nombreComercial.toUpperCase();
+    
+    // Clinic Names
     if (this.clinica.primerNombre) this.clinica.primerNombre = this.clinica.primerNombre.toUpperCase();
     if (this.clinica.segundoNombre) this.clinica.segundoNombre = this.clinica.segundoNombre.toUpperCase();
     if (this.clinica.primerApellido) this.clinica.primerApellido = this.clinica.primerApellido.toUpperCase();
     if (this.clinica.segundoApellido) this.clinica.segundoApellido = this.clinica.segundoApellido.toUpperCase();
+    
+    // Representative Names
+    if (this.clinica.repPrimerNombre) this.clinica.repPrimerNombre = this.clinica.repPrimerNombre.toUpperCase();
+    if (this.clinica.repSegundoNombre) this.clinica.repSegundoNombre = this.clinica.repSegundoNombre.toUpperCase();
+    if (this.clinica.repPrimerApellido) this.clinica.repPrimerApellido = this.clinica.repPrimerApellido.toUpperCase();
+    if (this.clinica.repSegundoApellido) this.clinica.repSegundoApellido = this.clinica.repSegundoApellido.toUpperCase();
+    
     if (this.clinica.cedulaRepresentante) this.clinica.cedulaRepresentante = this.clinica.cedulaRepresentante.toUpperCase();
   }
 }
