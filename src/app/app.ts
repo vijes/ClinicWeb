@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar';
 import { AuthService } from './services/auth.service';
+import { LoadingComponent } from './components/loading/loading';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavbarComponent],
+  imports: [CommonModule, RouterOutlet, NavbarComponent, LoadingComponent],
   template: `
+    <app-loading></app-loading>
     <app-navbar></app-navbar>
     <main [class.authenticated]="authService.user$ | async">
       <router-outlet></router-outlet>

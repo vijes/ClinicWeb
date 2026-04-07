@@ -4,11 +4,12 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, A
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ClinicaService } from '../../services/clinica.service';
+import { LoadingDirective } from '../../directives/loading.directive';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, LoadingDirective],
   template: `
     <div class="login-container">
       <div class="login-card card">
@@ -30,7 +31,7 @@ import { ClinicaService } from '../../services/clinica.service';
 
             <div *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</div>
             
-            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+            <button type="submit" class="btn btn-primary btn-block" appLoading>Entrar</button>
             <div class="auth-footer">
               <a (click)="startRegistration()">Registrar nuevo médico</a>
               <a (click)="mode = 'recover'">¿Olvidó su contraseña?</a>
