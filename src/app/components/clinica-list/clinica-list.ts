@@ -12,10 +12,14 @@ import { Clinica } from '../../models/clinica.model';
     <div class="container">
       <div class="header">
         <h1>Gestión de Clínicas</h1>
+      </div>
+      <div class="row">
         <button class="btn btn-primary" (click)="nuevaClinica()">Nueva Clínica</button>
+        <button class="btn btn-primary" (click)="cargarClinicas()">Buscar</button>
       </div>
 
       <div class="card shadow">
+
         <div class="table-responsive">
           <table>
             <thead>
@@ -65,7 +69,7 @@ import { Clinica } from '../../models/clinica.model';
 export class ClinicaListComponent implements OnInit {
   clinicas: Clinica[] = [];
 
-  constructor(private clinicaService: ClinicaService, private router: Router) {}
+  constructor(private clinicaService: ClinicaService, private router: Router) { }
 
   ngOnInit() {
     this.cargarClinicas();

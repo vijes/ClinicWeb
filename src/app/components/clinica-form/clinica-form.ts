@@ -147,7 +147,7 @@ import { Clinica } from '../../models/clinica.model';
           <div class="error-msg api-error" *ngIf="apiError">{{ apiError }}</div>
 
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary" [disabled]="cForm.invalid">
+            <button type="submit" class="btn btn-primary">
               {{ isEdit ? 'Actualizar' : 'Registrar' }} Clínica
             </button>
           </div>
@@ -188,7 +188,7 @@ export class ClinicaFormComponent implements OnInit {
     private clinicaService: ClinicaService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -209,7 +209,7 @@ export class ClinicaFormComponent implements OnInit {
     this.apiError = '';
     this.enforceUppercase();
 
-    const obs = this.isEdit 
+    const obs = this.isEdit
       ? this.clinicaService.update(this.clinica.id!, this.clinica)
       : this.clinicaService.create(this.clinica);
 
@@ -217,27 +217,38 @@ export class ClinicaFormComponent implements OnInit {
       next: () => this.router.navigate(['/clinicas']),
       error: (err) => {
         this.apiError = err.error?.message || err.error || 'Error al procesar la solicitud';
+        alert(this.apiError);
       }
     });
   }
 
   enforceUppercase() {
     if (this.clinica.ruc) this.clinica.ruc = this.clinica.ruc.toUpperCase();
-    if (this.clinica.razonSocial) this.clinica.razonSocial = this.clinica.razonSocial.toUpperCase();
-    if (this.clinica.nombreComercial) this.clinica.nombreComercial = this.clinica.nombreComercial.toUpperCase();
-    
     // Clinic Names
-    if (this.clinica.primerNombre) this.clinica.primerNombre = this.clinica.primerNombre.toUpperCase();
-    if (this.clinica.segundoNombre) this.clinica.segundoNombre = this.clinica.segundoNombre.toUpperCase();
-    if (this.clinica.primerApellido) this.clinica.primerApellido = this.clinica.primerApellido.toUpperCase();
-    if (this.clinica.segundoApellido) this.clinica.segundoApellido = this.clinica.segundoApellido.toUpperCase();
-    
+    if (this.clinica.esEmpresa) {
+      if (this.clinica.razonSocial) this.clinica.razonSocial = this.clinica.razonSocial.toUpperCase();
+      if (this.clinica.nombreComercial) this.clinica.nombreComercial = this.clinica.nombreComercial.toUpperCase();
+
+    } else {
+      if (this.clinica.primerNombre) this.clinica.primerNombre = this.clinica.primerNombre.toUpperCase();
+      if (this.clinica.segundoNombre) this.clinica.segundoNombre = this.clinica.segundoNombre.toUpperCase();
+      if (this.clinica.primerApellido) this.clinica.primerApellido = this.clinica.primerApellido.toUpperCase();
+      if (this.clinica.segundoApellido) this.clinica.segundoApellido = this.clinica.segundoApellido.toUpperCase();
+
+      if (this.clinica.primerNombre
+        || this.clinica.segundoNombre
+        || this.clinica.primerApellido
+        || this.clinica.segundoApellido) {
+        var comercialName = `${this.clinica.primerNombre} ${this.clinica.segundoNombre} ${this.clinica.primerApellido} ${this.clinica.segundoApellido}`
+        this.clinica.nombreComercial = comercialName.toUpperCase();
+      }
+    }
+
     // Representative Names
     if (this.clinica.repPrimerNombre) this.clinica.repPrimerNombre = this.clinica.repPrimerNombre.toUpperCase();
     if (this.clinica.repSegundoNombre) this.clinica.repSegundoNombre = this.clinica.repSegundoNombre.toUpperCase();
     if (this.clinica.repPrimerApellido) this.clinica.repPrimerApellido = this.clinica.repPrimerApellido.toUpperCase();
     if (this.clinica.repSegundoApellido) this.clinica.repSegundoApellido = this.clinica.repSegundoApellido.toUpperCase();
-    
     if (this.clinica.cedulaRepresentante) this.clinica.cedulaRepresentante = this.clinica.cedulaRepresentante.toUpperCase();
   }
 }

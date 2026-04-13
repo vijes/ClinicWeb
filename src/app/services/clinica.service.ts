@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Clinica } from '../models/clinica.model';
 
-const API_URL = environment.apiUrl + '/clinicas';
-const PUBLIC_API_URL = environment.apiUrl + '/public/clinicas';
+const API_URL_CLINIC = environment.apiUrl + '/clinicas';
+const PUBLIC_API_URL_CLINIC = environment.apiUrl + '/public/clinicas';
 
 @Injectable({
   providedIn: 'root'
@@ -14,30 +14,30 @@ export class ClinicaService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Clinica[]> {
-    return this.http.get<Clinica[]>(API_URL);
+    return this.http.get<Clinica[]>(API_URL_CLINIC);
   }
 
   getPublicList(): Observable<any[]> {
-    return this.http.get<any[]>(`${PUBLIC_API_URL}/list`);
+    return this.http.get<any[]>(`${PUBLIC_API_URL_CLINIC}/list`);
   }
 
   getById(id: string): Observable<Clinica> {
-    return this.http.get<Clinica>(`${API_URL}/${id}`);
+    return this.http.get<Clinica>(`${API_URL_CLINIC}/${id}`);
   }
 
   create(clinica: Clinica): Observable<Clinica> {
-    return this.http.post<Clinica>(API_URL, clinica);
+    return this.http.post<Clinica>(`${API_URL_CLINIC}/createClinica`, clinica);
   }
 
   update(id: string, clinica: Clinica): Observable<Clinica> {
-    return this.http.put<Clinica>(`${API_URL}/${id}`, clinica);
+    return this.http.put<Clinica>(`${API_URL_CLINIC}/${id}`, clinica);
   }
 
   delete(id: string): Observable<any> {
-    return this.http.delete(`${API_URL}/${id}`);
+    return this.http.delete(`${API_URL_CLINIC}/${id}`);
   }
 
   validateAccessCode(id: string, code: string): Observable<boolean> {
-    return this.http.get<boolean>(`${PUBLIC_API_URL}/validate-code/${id}/${code}`);
+    return this.http.get<boolean>(`${PUBLIC_API_URL_CLINIC}/validate-code/${id}/${code}`);
   }
 }
